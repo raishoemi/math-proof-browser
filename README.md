@@ -9,3 +9,5 @@ After the basic idea is implemented, there are a few useful features I'd like to
 
 ## What now
 * I'm currently working on the basic idea of the project. I'm using the [Lean Theorem Prover](https://leanprover.github.io/) to write the proofs, and I'm using [Lean's API](https://leanprover.github.io/lean4/doc/lean4-api-doc/) to extract the proofs into a JSON file.
+
+
