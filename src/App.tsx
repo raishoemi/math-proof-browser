@@ -30,7 +30,8 @@ const useStyles = createUseStyles({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        backgroundColor: Colors.Secondary2
+        backgroundColor: Colors.Secondary2,
+        overflow: 'hidden'
     },
     searchContainer: {
         width: '80%',

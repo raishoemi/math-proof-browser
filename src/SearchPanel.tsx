@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createUseStyles } from 'react-jss';
+import ProofResult from './components/ProofResult';
 import SearchInput from './components/SearchInput';
 import { proofs as mockPoofs } from './proofs.mock';
 
@@ -16,7 +17,9 @@ const SearchPage: React.FC = () => {
             </div>
             <div className={classes.searchResultsContainer}>
                 {proofs.map((proof) => (
-                    <div className={classes.searchResultContainer}>{proof.title}</div>
+                    <div key={proof.id} className={classes.searchResultContainer}>
+                        <ProofResult proof={proof} />
+                    </div>
                 ))}
             </div>
         </>
@@ -46,13 +49,21 @@ const useStyles = createUseStyles({
         marginRight: 'auto',
         height: '15%',
         marginBottom: '5%',
+        padding: '10px',
+
         borderRadius: '5px',
-        boxShadow: '0 0 7px 0 rgba(0,0,0,0.2)',
-        '&:hover': {
-            boxShadow: '0 0 10px 0 rgba(0,0,0,0.5)'
-        },
-        backgroundColor: 'white',
         cursor: 'pointer',
+        boxSizing: 'border-box',
+        boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.2)',
+        border: 'none',
+        outline: 'none',
+        fontSize: '16px',
+        color: '#333',
+        backgroundColor: '#fff',
+        transition: 'all 0.15s ease-in-out',
+        '&:hover': {
+            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.5)',
+        },
     },
 });
 
