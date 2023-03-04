@@ -11,7 +11,7 @@ const router = createBrowserRouter(
 	createRoutesFromElements(
 		<>
 			<Route path="/" element={<SearchPage />} />
-			<Route path="proof/:id" element={<ProofPage />} />
+			<Route path="proofs/:id" element={<ProofPage />} />
 			<Route path="*" element={<Navigate to="/" replace />} />
 		</>,
 	),
