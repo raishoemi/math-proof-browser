@@ -5,7 +5,7 @@ export const proofs: Proof[] = [
         title: "Closed Operation",
         type: ProofType.Definition,
         why: "",
-        what: "\\href{http://localhost:3000/proofs/1.1.1}{text} \\\\  \\text{Let }A\\text{ be a set, and }*\\text{ be an operation on }A\\text{. Then }*\\text{ is closed if for all }a,b \\in A\\text{, it is true that }a * b \\in A",
+        what: "\\text{Let }A\\text{ be a set, and }*\\text{ be an operation on }A\\text{. Then }*\\text{ is closed if for all }a,b \\in A\\text{, it is true that }a * b \\in A",
         id: "1.1.1",
     },
     {

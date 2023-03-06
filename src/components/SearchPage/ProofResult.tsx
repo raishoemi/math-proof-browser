@@ -1,8 +1,8 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
 import { Proof } from "../../types";
-import { InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
+import Katex from "components/Katex";
 
 interface Props {
     proof: Proof;
@@ -22,7 +22,7 @@ const ProofResult: React.FC<Props> = ({ proof }) => {
                 </div>
                 <span className={classes.id}>{proof.id}</span>
             </div>
-            <InlineMath math={proof.what} />
+            <Katex text={proof.what} />
         </div>
     );
 };
