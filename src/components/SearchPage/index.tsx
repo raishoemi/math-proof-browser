@@ -120,7 +120,7 @@ const useStyles = createUseStyles({
         top: 0,
         left: "-150%",
         background: `linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%)`,
-        animation: "$loading 1.5s infinite",
+        animation: "$loading ease-in-out 1.5s infinite",
     },
     "@keyframes loading": {
         "0%": {
