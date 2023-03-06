@@ -39,7 +39,7 @@ const SearchPage: React.FC = () => {
             <div className={classes.searchResultsContainer}>
                 {isSearching
                     ? [...Array(4)].map((_, i) => (
-                        <div className={classes.skeletonResult} key={`skeleton-${i}`}>
+                        <div className={`${classes.searchResultContainer} ${classes.skeletonResult}`} key={`skeleton-${i}`}>
                             <div className={classes.loadingBar} />
                         </div>
                     ))
@@ -103,11 +103,12 @@ const useStyles = createUseStyles({
         },
     },
     skeletonResult: {
-        marginLeft: "auto",
-        marginRight: "auto",
-        width: "90%",
-        height: "15%",
-        marginBottom: "5%",
+        padding: 0,
+        transition: "none",
+        "&:hover": {
+            boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.2)",
+        },
+        cursor: "default",
         backgroundColor: "#EAEAEA",
         position: "relative",
         overflow: "hidden",
