@@ -2,7 +2,7 @@ import { Proof, ProofType } from "./types";
 
 export const proofs: Proof[] = [
 	{
-		title: "Closed Opeartion",
+		title: "Closed Operation",
 		type: ProofType.Definition,
 		why: "",
 		what: "\\text{Let }A\\text{ be a set, and }*\\text{ be an operation on }A\\text{. Then }*\\text{ is closed if for all }a,b \\in A\\text{, it is true that }a * b \\in A",
