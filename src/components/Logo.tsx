@@ -7,7 +7,7 @@ const Logo: React.FC<{}> = () => {
     const classes = useStyles();
     const navigateToHome = () => {
         if (window.location.pathname !== "/") {
-            window.location.replace("/");
+            window.location.assign("/");
         }
     };
     return (
