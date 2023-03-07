@@ -1,8 +1,8 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
+import logo from "assets/logo.svg";
 
-// TODO: When you make the logo, make sure it looks clickable
-// can also animate a little bit when hovering
+// TODO: Add cool opacity animation and magnifying glass rotation effect, on hover
 const Logo: React.FC<{}> = () => {
     const classes = useStyles();
     const navigateToHome = () => {
@@ -11,19 +11,23 @@ const Logo: React.FC<{}> = () => {
         }
     };
     return (
-        <h1
+        <img
+            alt="logo"
+            src={logo}
             className={classes.logo}
             onClick={navigateToHome}
             onKeyUp={navigateToHome}
-        >
-            Logo
-        </h1>
+        />
     );
 };
 
 const useStyles = createUseStyles({
     logo: {
+        width: "100%",
         cursor: "pointer",
+        "&:hover": {
+            opacity: 0.6,
+        }
     },
 });
 

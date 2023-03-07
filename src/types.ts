@@ -11,4 +11,5 @@ export enum ProofType {
 	Lemma = "Lemma",
 	Definition = "Definition",
 	Corollary = "Corollary",
+    Axiom = "Axiom",
 }

@@ -2,56 +2,38 @@ import { Proof, ProofType } from "./types";
 
 export const proofs: Proof[] = [
     {
-        title: "Closed Operation",
+        id: "1.1",
         type: ProofType.Definition,
+        title: "Set",
         why: "",
-        what: "\\text{Let }A\\text{ be a set, and }*\\text{ be an operation on }A\\text{. Then }*\\text{ is closed if for all }a,b \\in A\\text{, it is true that }a * b \\in A",
-        id: "1.1.1",
+        what: "\\text{A set is a collection of objects.}",
     },
     {
-        title: "Associative Operation",
+        id: "1.3",
         type: ProofType.Definition,
+        title: "Natural Numbers",
         why: "",
-        what: "\\text{Let }A\\text{ be a set, and }*\\text{ be an operation on }A\\text{. Then }*\\text{ is associative if for all }a,b,c \\in A\\text{, it is true that }a * (b * c) = (a * b) * c",
-        id: "1.1.2",
+        what: "\\text{The natural numbers (}\\natnums\\text{) are the set of all positive integers:}\\\\\\set{1,2,3,4,...}",
     },
     {
-        title: "Commutative Operation",
+        id: "1.4",
+        type: ProofType.Axiom,
+        title: "Set Equality",
+        why: "",
+        what: "\\text{Let }A,B\\text{ be sets. Then }A=B\\iff \\forall a \\in A, a \\in B \\land \\forall b \\in B, b \\in A",
+    },
+    {
+        id: "1.5",
         type: ProofType.Definition,
+        title: "Empty Set",
         why: "",
-        what: "\\text{Let }A\\text{ be a set, and }*\\text{ be an operation on }A\\text{. Then }*\\text{ is commutative if for all }a,b \\in A\\text{, it is true that }a * b = b * a",
-        id: "1.1.3",
+        what: "\\text{The empty set (}\\emptyset\\text{) is the set with no elements.}",
     },
     {
-        title: "Distribution",
+        id: "1.6",
         type: ProofType.Definition,
+        title: "Subset",
         why: "",
-        what: "\\text{Let }A\\text{ be a set, and }*,\\&\\text{ be operations on }A\\text{, where }A\\text{ is closed under them. Then }*\\text{ is distributive over }\\&\\text{ if for all }a,b,c \\in A\\text{, it is true that }a * (b \\& c) = (a * b) \\& (a * c)",
-        id: "1.1.4",
-    },
-    {
-        title: "Neutral Element",
-        type: ProofType.Definition,
-        why: "",
-        what: "\\text{Let }A\\text{ be a set, and }*\\text{ be an operation on }A\\text{. Then }*\\text{ is neutral if there exists an element }e \\in A\\text{ such that for all }a \\in A\\text{, it is true that }a * e = e * a = a.",
-        id: "1.1.5",
-    },
-    {
-        title: "",
-        type: ProofType.Theorem,
-        why: `\\text{Assume that }e,e' \\in A\\text{, and both are neutral elements for }*\\text{, then we'll see that necessarily }e=e'\\\\
-            \\text{Due to }e\\text{ being neutral, }e * e' = e\\\\
-            \\text{Due to }e'\\text{ being neutral, }e * e' = e\\\\
-            \\text{Therefore, }e = e'
-            `,
-        what: "\\text{Let }*\\text{ be an operation on a set }A\\text{. }A\\text{ contains no more than one neutral element}",
-        id: "1.1.6",
-    },
-    {
-        title: "",
-        type: ProofType.Corollary,
-        what: "\\text{If }e \\in A\\text{ is a neutral element for }*\\text{, then }e\\text{ is unique for }*",
-        id: "1.1.7",
-        why: "",
+        what: "\\text{Let }A,B\\text{ be sets. Then }A\\subseteq B\\iff \\forall a \\in A, a \\in B",
     },
 ];
