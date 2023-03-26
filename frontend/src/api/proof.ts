@@ -1,39 +1,50 @@
 import { proofs } from "proofs.mock";
 import { Proof } from "types";
 
+const API_URL = "http://localhost:3001";
+
 abstract class ProofApiBase {
-    abstract getProof(id: string): Promise<Proof>;
-    abstract searchProofs(query: string): Promise<Proof[]>;
+  abstract getProof(id: string): Promise<Proof>;
+  abstract searchProofs(query: string): Promise<Proof[]>;
 }
 
 export class ProofApi extends ProofApiBase {
-    getProof(id: string): Promise<Proof> {
-        // TODO Actually do fetch stuff
-        return Promise.reject();
+  async getProof(id: string): Promise<Proof> {
+    const response = await fetch(`${API_URL}/proofs/${id}`);
+    if (response.status === 200) {
+      const proof = await response.json();
+      return Promise.resolve(proof);
+    } else if (response.status === 404) {
+      return Promise.reject("Proof not found");
     }
+    return Promise.reject("Unknown error");
+  }
 
-    searchProofs(query: string): Promise<Proof[]> {
-        // TODO Actually do fetch stuff
-        // Implement pagiation, prioriization (id equality > title equality > description equality)
-        return Promise.reject();
+  async searchProofs(query: string): Promise<Proof[]> {
+    const response = await fetch(`${API_URL}/proofs?q=${query}`);
+    if (response.status === 200) {
+      const proofs = await response.json();
+      return Promise.resolve(proofs);
     }
+    return Promise.reject("Unknown error");
+  }
 }
 
 export class MockProofApi extends ProofApiBase {
-    getProof(id: string): Promise<Proof> {
-        const foundProofs = proofs.filter((proof) => proof.id === id);
-        if (foundProofs.length > 1)
-            return Promise.reject(`Found more than one proof with id: ${id}`);
-        if (foundProofs.length === 0)
-            return Promise.reject(`Could not find proof with id: ${id}`);
-        return Promise.resolve(foundProofs[0]);
-    }
+  getProof(id: string): Promise<Proof> {
+    const foundProofs = proofs.filter((proof) => proof.id === id);
+    if (foundProofs.length > 1)
+      return Promise.reject(`Found more than one proof with id: ${id}`);
+    if (foundProofs.length === 0)
+      return Promise.reject(`Could not find proof with id: ${id}`);
+    return Promise.resolve(foundProofs[0]);
+  }
 
-    async searchProofs(query: string): Promise<Proof[]> {
-        const foundProofs = proofs.filter((proof) =>
-            proof.title.toLowerCase().includes(query.toLowerCase()),
-        );
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        return Promise.resolve(foundProofs);
-    }
+  async searchProofs(query: string): Promise<Proof[]> {
+    const foundProofs = proofs.filter((proof) =>
+      proof.title.toLowerCase().includes(query.toLowerCase())
+    );
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return Promise.resolve(foundProofs);
+  }
 }

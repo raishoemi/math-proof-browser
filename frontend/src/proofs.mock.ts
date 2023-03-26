@@ -1,7 +1,7 @@
 import { Proof, ProofType } from "./types";
 
 export const proofs: Proof[] = [
-    {
+  /*{
         id: "1.1",
         type: ProofType.Definition,
         title: "Set",
@@ -35,5 +35,5 @@ export const proofs: Proof[] = [
         title: "Subset",
         why: "",
         what: "\\text{Let }A,B\\text{ be sets. Then }A\\subseteq B\\iff \\forall a \\in A, a \\in B",
-    },
+    },*/
 ];
