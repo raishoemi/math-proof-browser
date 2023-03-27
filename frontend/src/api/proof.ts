@@ -28,6 +28,30 @@ export class ProofApi extends ProofApiBase {
     }
     return Promise.reject("Unknown error");
   }
+
+  async createProof(proof: Proof): Promise<void> {
+    const response = await fetch(`${API_URL}/proofs`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(proof),
+    });
+    if (response.status !== 201) {
+      return Promise.reject("Unknown error");
+    }
+  }
+
+  async deleteProof(id: string): Promise<void> {
+    const response = await fetch(`${API_URL}/proofs/${id}`, {
+      method: "DELETE",
+    });
+    if (response.status === 404) {
+      return Promise.reject("Proof not found");
+    } else if (response.status !== 200) {
+      return Promise.reject("Unknown error");
+    }
+  }
 }
 
 export class MockProofApi extends ProofApiBase {

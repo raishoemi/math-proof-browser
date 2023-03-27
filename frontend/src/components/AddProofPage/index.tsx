@@ -3,9 +3,12 @@ import KatexEditor from "components/KatexEditor";
 import { useForm } from "react-hook-form";
 import { createUseStyles } from "react-jss";
 import { CourseTag, ProofType } from "types";
+import { proofApi } from "api";
+import { useNavigate } from "react-router-dom";
 
 const AddNewProofPage = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -16,11 +19,11 @@ const AddNewProofPage = () => {
   const [whatValue, setWhatValue] = useState("");
 
   const onSubmit = (data: any) => {
-    console.log(data);
-    // Call an API endpoint to create the proof with the submitted data
+    proofApi.createProof(data).then(() => navigate("/"));
   };
 
   // TODO: Make it so what/why take up most of the screen. ID/course/type should all be in the same row
+  // TODO: Style textareas like the other inputs (boder, onFocus, etc.)
 
   return (
     <div className={classes.pageContainer}>

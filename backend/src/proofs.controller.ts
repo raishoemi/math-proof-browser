@@ -1,6 +1,10 @@
 import { CreateProofDTO } from './proofs.dto';
 import { Proof } from './proofs.entity';
-import { ProofsService } from './proofs.service';
+import {
+  ProofAlreadyExistsException,
+  ProofNotFoundException,
+  ProofsService,
+} from './proofs.service';
 import {
   Body,
   Controller,
@@ -11,6 +15,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiQuery } from '@nestjs/swagger';
+import {
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common/exceptions';
 
 @Controller('proofs')
 export class ProofsController {
@@ -28,12 +36,25 @@ export class ProofsController {
   }
 
   @Post()
-  createProof(@Body() createProofDTO: CreateProofDTO): Promise<Proof> {
-    return this.proofService.create(createProofDTO);
+  async createProof(@Body() createProofDTO: CreateProofDTO): Promise<Proof> {
+    try {
+      const createdProof = await this.proofService.create(createProofDTO);
+      return createdProof;
+    } catch (error) {
+      if (error instanceof ProofAlreadyExistsException) {
+        throw new ConflictException(error.message);
+      }
+    }
   }
 
   @Delete(':id')
-  deleteProof(@Param('id') id: string): Promise<void> {
-    return this.proofService.delete(id);
+  async deleteProof(@Param('id') id: string): Promise<void> {
+    try {
+      await this.proofService.delete(id);
+    } catch (error) {
+      if (error instanceof ProofNotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+    }
   }
 }
