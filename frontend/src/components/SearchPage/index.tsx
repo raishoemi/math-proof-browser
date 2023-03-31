@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { useNavigate } from "react-router-dom";
 import { Proof } from "types";
+import { sortByID } from "./sortProofs";
 
 const SearchPage: React.FC = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const SearchPage: React.FC = () => {
     setIsSearching(true);
     proofApi
       .searchProofs(debouncedSearchQuery)
-      .then((results) => setSearchResults(results))
+      .then((results) => setSearchResults(results.sort(sortByID)))
       .catch((err) => console.log(err))
       .finally(() => setIsSearching(false));
   }, [debouncedSearchQuery]);
