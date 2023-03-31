@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
+import { CreateProofDTO, UpdateProofDTO } from './proofs.dto';
 import { Proof } from './proofs.entity';
 
 @Injectable()
@@ -10,18 +11,25 @@ export class ProofsService {
     private proofRepository: Repository<Proof>,
   ) {}
 
-  async create(proof: Proof): Promise<Proof> {
-    if (proof.id) {
-      const existing = await this.proofRepository.findOne({
-        where: { id: proof.id },
-      });
-      if (existing) throw new ProofAlreadyExistsException(proof.id);
-    }
-    return await this.proofRepository.save(proof);
+  async create(proof: CreateProofDTO): Promise<Proof> {
+    // if proof with same id already exists, throw error
+    const existingProof = await this.proofRepository.findOne({
+      where: { id: proof.id },
+    });
+    if (existingProof) throw new ProofAlreadyExistsException(proof.id);
+
+    return this.proofRepository.save(proof);
+  }
+
+  async update(id: string, proof: UpdateProofDTO): Promise<Proof> {
+    const existingProof = await this.proofRepository.findOne({ where: { id } });
+    if (!existingProof) throw new ProofNotFoundException(id);
+
+    return this.proofRepository.save({ ...existingProof, ...proof });
   }
 
   async query(query: string): Promise<Proof[]> {
-    return await this.proofRepository.find({
+    return this.proofRepository.find({
       where: { title: Like(`%${query}%`) },
     });
   }
@@ -32,7 +40,7 @@ export class ProofsService {
   }
 
   async findOne(id: string): Promise<Proof> {
-    return await this.proofRepository.findOne({ where: { id } });
+    return this.proofRepository.findOne({ where: { id } });
   }
 }
 

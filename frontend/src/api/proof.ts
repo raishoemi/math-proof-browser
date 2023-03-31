@@ -38,7 +38,24 @@ export class ProofApi extends ProofApiBase {
       body: JSON.stringify(proof),
     });
     if (response.status !== 201) {
-      return Promise.reject("Unknown error");
+      if (response.status === 409)
+        return Promise.reject("Proof already exists");
+      else return Promise.reject("Unknown error");
+    }
+  }
+
+  async updateProof(proof: Partial<Proof>): Promise<void> {
+    const { id, ...proofData } = proof;
+    const response = await fetch(`${API_URL}/proofs/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(proofData),
+    });
+    if (response.status !== 200) {
+      if (response.status === 404) return Promise.reject("Proof not found");
+      else return Promise.reject("Unknown error");
     }
   }
 

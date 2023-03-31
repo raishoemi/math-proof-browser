@@ -1,4 +1,4 @@
-import { CreateProofDTO } from './proofs.dto';
+import { CreateProofDTO, UpdateProofDTO } from './proofs.dto';
 import { Proof } from './proofs.entity';
 import {
   ProofAlreadyExistsException,
@@ -12,9 +12,10 @@ import {
   Get,
   Param,
   Post,
+  Patch,
   Query,
 } from '@nestjs/common';
-import { ApiQuery } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
 import {
   ConflictException,
   NotFoundException,
@@ -36,14 +37,29 @@ export class ProofsController {
   }
 
   @Post()
+  @ApiCreatedResponse({ type: CreateProofDTO })
   async createProof(@Body() createProofDTO: CreateProofDTO): Promise<Proof> {
     try {
       const createdProof = await this.proofService.create(createProofDTO);
       return createdProof;
     } catch (error) {
-      if (error instanceof ProofAlreadyExistsException) {
+      if (error instanceof ProofAlreadyExistsException)
         throw new ConflictException(error.message);
-      }
+    }
+  }
+
+  @Patch(':id')
+  @ApiOkResponse({ type: CreateProofDTO })
+  async updateProof(
+    @Param('id') id: string,
+    @Body() updateProofDTO: UpdateProofDTO,
+  ): Promise<Proof> {
+    try {
+      const updatedProof = await this.proofService.update(id, updateProofDTO);
+      return updatedProof;
+    } catch (error) {
+      if (error instanceof ProofNotFoundException)
+        throw new NotFoundException(error.message);
     }
   }
 

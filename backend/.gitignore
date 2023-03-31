@@ -36,3 +36,5 @@ lerna-debug.log*
 
 # mysql local DB
 mysql-data
+
+.null-ls*

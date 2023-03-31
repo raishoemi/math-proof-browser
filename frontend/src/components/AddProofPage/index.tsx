@@ -1,37 +1,84 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import KatexEditor from "components/KatexEditor";
 import { useForm } from "react-hook-form";
 import { createUseStyles } from "react-jss";
-import { CourseTag, ProofType } from "types";
+import { CourseTag, Proof, ProofType } from "types";
 import { proofApi } from "api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
+// TODO: Make it so what/why take up most of the screen. ID/course/type should all be in the same row
+// TODO: Style textareas like the other inputs (boder, onFocus, etc.)
+
+/**
+ * This component supports adding a new proof or editing an existing proof.
+ * If the URL contains a query parameter "id", then the component will
+ * load the proof with that ID and prefill the form with the proof's data.
+ * Otherwise, the component will create a new proof.
+ */
 const AddNewProofPage = () => {
   const classes = useStyles();
+  const [searchParams, _] = useSearchParams();
+  const [existingProof, setExistingProof] = useState<Proof | null>(null);
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
+
+  const existingProofID = searchParams.get("id");
+
+  useEffect(() => {
+    if (existingProofID) {
+      proofApi.getProof(existingProofID).then((proof) => {
+        setExistingProof(proof);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (existingProof !== null) {
+      setValue("id", existingProof.id);
+      setValue("courseTag", existingProof.courseTag);
+      setValue("type", existingProof.type);
+      setValue("title", existingProof.title);
+      setValue("what", existingProof.what);
+      setValue("why", existingProof.why);
+      setWhatValue(existingProof.what);
+      setWhyValue(existingProof.why);
+    }
+  }, [existingProof]);
 
   const [whyValue, setWhyValue] = useState("");
   const [whatValue, setWhatValue] = useState("");
 
   const onSubmit = (data: any) => {
-    proofApi.createProof(data).then(() => navigate("/"));
+    if (existingProofID) {
+      proofApi.updateProof(data).then(() => {
+        navigate(`/proofs/${existingProofID}`);
+      });
+    } else {
+      proofApi.createProof(data).then(() => {
+        navigate("/");
+      });
+    }
   };
 
-  // TODO: Make it so what/why take up most of the screen. ID/course/type should all be in the same row
-  // TODO: Style textareas like the other inputs (boder, onFocus, etc.)
+  if (existingProofID && !existingProof) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={classes.pageContainer}>
-      <h1 className={classes.pageTitle}>Add Proof</h1>
+      <h1 className={classes.pageTitle}>
+        {existingProofID ? "Edit" : "Add"} Proof
+      </h1>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <div>
           <label htmlFor="id">ID</label>
           <input
+            disabled={!!existingProofID}
             className={classes.proofID}
             type="text"
             {...register("id", { required: true })}
@@ -86,6 +133,7 @@ const AddNewProofPage = () => {
             onChange={(newValue) => setWhatValue(newValue)}
             label={{ htmlFor: "what", text: "What" }}
             textAreaExtraProps={register("what", { required: true })}
+            error={!!errors.what}
           />
         </div>
         <div className={classes.katexEditorContainer}>
@@ -94,12 +142,15 @@ const AddNewProofPage = () => {
             onChange={(newValue) => setWhyValue(newValue)}
             label={{ htmlFor: "why", text: "Why" }}
             textAreaExtraProps={register("why")}
+            error={!!errors.why}
           />
         </div>
 
-        <button className={classes.submitButton} type="submit">
-          Submit
-        </button>
+        <div>
+          <button className={classes.submitButton} type="submit">
+            {existingProof === null ? "Submit" : "Update"}
+          </button>
+        </div>
       </form>
     </div>
   );
@@ -161,21 +212,24 @@ const useStyles = createUseStyles({
         marginTop: 5,
       },
     },
-    "& > button": {
-      padding: "10px 20px",
-      backgroundColor: "#4d90fe",
-      color: "#fff",
-      border: "none",
-      borderRadius: 5,
-      fontSize: 16,
-      cursor: "pointer",
-      transition: "background-color 0.3s ease",
-      "&:hover": {
-        backgroundColor: "#357ae8",
-      },
-    },
+  },
+  buttonsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   submitButton: {
+    padding: "10px 20px",
+    backgroundColor: "#4d90fe",
+    color: "#fff",
+    border: "none",
+    borderRadius: 5,
+    fontSize: 16,
+    cursor: "pointer",
+    transition: "background-color 0.3s ease",
+    "&:hover": {
+      backgroundColor: "#357ae8",
+    },
     alignSelf: "center",
     width: "15%",
   },

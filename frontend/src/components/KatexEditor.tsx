@@ -1,4 +1,5 @@
 import React from "react";
+import { FieldError } from "react-hook-form";
 import { createUseStyles } from "react-jss";
 import Katex from "./Katex";
 
@@ -10,6 +11,7 @@ interface Props {
     text: string;
   };
   textAreaExtraProps: {};
+  error?: boolean;
 }
 
 const KatexEditor: React.FC<Props> = (props) => {
@@ -17,7 +19,6 @@ const KatexEditor: React.FC<Props> = (props) => {
   const [isPreviewModeActive, setIsPreviewModeActive] = React.useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    console.log(e.target.value);
     props.onChange(e.target.value);
   };
 
@@ -38,6 +39,7 @@ const KatexEditor: React.FC<Props> = (props) => {
             type="checkbox"
             className={classes.previewCheckbox}
             checked={isPreviewModeActive}
+            readOnly
           />
           <span className={classes.previewCheckboxText}>Preview</span>
         </div>
@@ -47,12 +49,15 @@ const KatexEditor: React.FC<Props> = (props) => {
           <Katex text={props.value} />
         </div>
       ) : (
-        <textarea
-          className={classes.textArea}
-          {...props.textAreaExtraProps}
-          onChange={handleChange}
-          value={props.value}
-        />
+        <>
+          <textarea
+            className={classes.textArea}
+            {...props.textAreaExtraProps}
+            onChange={handleChange}
+            value={props.value}
+          />
+          {props.error && <span>This field is required</span>}
+        </>
       )}
     </>
   );

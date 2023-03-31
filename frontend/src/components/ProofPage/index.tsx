@@ -5,6 +5,7 @@ import { createUseStyles } from "react-jss";
 import { redirect, useNavigate, useParams } from "react-router-dom";
 import { Proof } from "types";
 import { ReactComponent as TrashIcon } from "assets/trash.svg";
+import { ReactComponent as EditIcon } from "assets/edit.svg";
 import AreYouSureModal from "components/AreYouSureModal";
 
 const ProofPage: React.FC = () => {
@@ -21,6 +22,10 @@ const ProofPage: React.FC = () => {
 
   const deleteProof = () => {
     if (proof) proofApi.deleteProof(proof.id).then(() => navigate("/"));
+  };
+
+  const editProof = () => {
+    if (proof) navigate(`/proofs/create?id=${proof.id}`);
   };
 
   useEffect(() => {
@@ -48,7 +53,18 @@ const ProofPage: React.FC = () => {
           <div className={classes.proofTitle}>
             {proof.type} {proof.title && ` - ${proof.title}`}
           </div>
-          <TrashIcon className={classes.trashIcon} onClick={toggleModal} />
+          <div className={classes.iconsContainer}>
+            <TrashIcon
+              className={classes.trashIcon}
+              onClick={toggleModal}
+              title={"Delete"}
+            />
+            <EditIcon
+              className={classes.editIcon}
+              onClick={editProof}
+              title={"Edit"}
+            />
+          </div>
           <AreYouSureModal
             title={"Delete Proof"}
             text={`are you sure you wish to delete proof ${proof.id}?`}
@@ -117,11 +133,28 @@ const useStyles = createUseStyles({
     marginBottom: "2%",
     opacity: "0.2",
   },
+  iconsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "8%",
+  },
   trashIcon: {
-    width: "2.5%",
+    width: "2vw",
+    height: "2vw",
     cursor: "pointer",
     "&:hover": {
       fill: "#ff0000",
+      transform: "scale(1.05)",
+      transition: "fill 0.2s ease-in-out",
+    },
+  },
+  editIcon: {
+    width: "2vw",
+    height: "2vw",
+    cursor: "pointer",
+    "&:hover": {
       transform: "scale(1.05)",
       transition: "fill 0.2s ease-in-out",
     },

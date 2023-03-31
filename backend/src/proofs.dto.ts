@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 import { CourseTag, ProofType } from './proofs.types';
 
 export class CreateProofDTO {
@@ -16,16 +16,14 @@ export class CreateProofDTO {
   @IsNotEmpty()
   readonly type: ProofType;
 
-  @ApiProperty({ example: 'Definition' })
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ example: 'Definition' })
   readonly title: string;
 
   @ApiProperty({ example: 'This happens' })
   @IsNotEmpty()
   readonly what: string;
 
-  @ApiProperty({ example: 'Because of this' })
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ example: 'Because of this' })
   readonly why: string;
 
   @ApiProperty({
@@ -35,5 +33,37 @@ export class CreateProofDTO {
   })
   @IsEnum(CourseTag)
   @IsNotEmpty()
-  readonly courseTag: string;
+  readonly courseTag: CourseTag;
+}
+
+export class UpdateProofDTO {
+  @ApiPropertyOptional({
+    example: ProofType.Definition.toString(),
+    enum: ProofType,
+    enumName: 'ProofType',
+  })
+  @IsEnum(ProofType)
+  @IsOptional()
+  readonly type?: ProofType;
+
+  @ApiPropertyOptional({ example: 'Definition' })
+  @IsOptional()
+  readonly title?: string;
+
+  @ApiPropertyOptional({ example: 'This happens' })
+  @IsOptional()
+  readonly what?: string;
+
+  @ApiPropertyOptional({ example: 'Because of this' })
+  @IsOptional()
+  readonly why?: string;
+
+  @ApiPropertyOptional({
+    example: CourseTag.Calculus.toString(),
+    enum: CourseTag,
+    enumName: 'CourseTag',
+  })
+  @IsEnum(CourseTag)
+  @IsOptional()
+  readonly courseTag?: CourseTag;
 }
