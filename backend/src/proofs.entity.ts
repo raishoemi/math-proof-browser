@@ -15,10 +15,10 @@ export class Proof {
   @Column()
   title: string;
 
-  @Column()
+  @Column({ length: 5000 })
   what: string;
 
-  @Column()
+  @Column({ length: 5000 })
   why: string;
 
   @Column({
@@ -29,4 +29,3 @@ export class Proof {
 }
 
 export { ProofType };
-

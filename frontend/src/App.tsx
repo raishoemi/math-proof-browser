@@ -4,6 +4,8 @@ import { Colors } from "./colors";
 import router from "./components/Router";
 import Logo from "./components/Logo";
 import { RouterProvider } from "react-router";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App: React.FC<{}> = () => {
   const classes = useStyles();
@@ -14,6 +16,7 @@ const App: React.FC<{}> = () => {
         <div className={classes.logoContainer}>
           <Logo />
         </div>
+        <ToastContainer theme={"colored"} position={"bottom-right"} />
       </div>
     </>
   );

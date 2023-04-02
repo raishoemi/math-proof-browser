@@ -15,7 +15,7 @@ export class ProofApi extends ProofApiBase {
       const proof = await response.json();
       return Promise.resolve(proof);
     } else if (response.status === 404) {
-      return Promise.reject("Proof not found");
+      return Promise.reject(`Proof with id ${id} not found`);
     }
     return Promise.reject("Unknown error");
   }
@@ -39,7 +39,7 @@ export class ProofApi extends ProofApiBase {
     });
     if (response.status !== 201) {
       if (response.status === 409)
-        return Promise.reject("Proof already exists");
+        return Promise.reject(`Proof with id ${proof.id} already exists`);
       else return Promise.reject("Unknown error");
     }
   }
@@ -53,9 +53,10 @@ export class ProofApi extends ProofApiBase {
       },
       body: JSON.stringify(proofData),
     });
-    if (response.status !== 200) {
-      if (response.status === 404) return Promise.reject("Proof not found");
-      else return Promise.reject("Unknown error");
+    if (response.status === 404) {
+      return Promise.reject(`Proof with id ${id} not found`);
+    } else if (response.status !== 200) {
+      return Promise.reject("Unknown error");
     }
   }
 
@@ -64,7 +65,7 @@ export class ProofApi extends ProofApiBase {
       method: "DELETE",
     });
     if (response.status === 404) {
-      return Promise.reject("Proof not found");
+      return Promise.reject(`Proof with id ${id} not found`);
     } else if (response.status !== 200) {
       return Promise.reject("Unknown error");
     }

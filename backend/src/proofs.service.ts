@@ -12,7 +12,6 @@ export class ProofsService {
   ) {}
 
   async create(proof: CreateProofDTO): Promise<Proof> {
-    // if proof with same id already exists, throw error
     const existingProof = await this.proofRepository.findOne({
       where: { id: proof.id },
     });
@@ -28,7 +27,8 @@ export class ProofsService {
     return this.proofRepository.save({ ...existingProof, ...proof });
   }
 
-  async query(query: string): Promise<Proof[]> {
+  async query(query?: string): Promise<Proof[]> {
+    query ||= '';
     return this.proofRepository.find({
       where: { title: Like(`%${query}%`) },
     });
@@ -40,7 +40,9 @@ export class ProofsService {
   }
 
   async findOne(id: string): Promise<Proof> {
-    return this.proofRepository.findOne({ where: { id } });
+    const proof = await this.proofRepository.findOne({ where: { id } });
+    if (proof === null) throw new ProofNotFoundException(id);
+    return proof;
   }
 }
 

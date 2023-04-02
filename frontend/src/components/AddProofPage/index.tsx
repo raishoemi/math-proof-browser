@@ -5,6 +5,7 @@ import { createUseStyles } from "react-jss";
 import { CourseTag, Proof, ProofType } from "types";
 import { proofApi } from "api";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // TODO: Make it so what/why take up most of the screen. ID/course/type should all be in the same row
 // TODO: Style textareas like the other inputs (boder, onFocus, etc.)
@@ -31,9 +32,16 @@ const AddNewProofPage = () => {
 
   useEffect(() => {
     if (existingProofID) {
-      proofApi.getProof(existingProofID).then((proof) => {
-        setExistingProof(proof);
-      });
+      proofApi
+        .getProof(existingProofID)
+        .then((proof) => {
+          setExistingProof(proof);
+        })
+        .catch((err) => {
+          toast(err, {
+            type: "error",
+          });
+        });
     }
   }, []);
 
@@ -55,13 +63,27 @@ const AddNewProofPage = () => {
 
   const onSubmit = (data: any) => {
     if (existingProofID) {
-      proofApi.updateProof(data).then(() => {
-        navigate(`/proofs/${existingProofID}`);
-      });
+      proofApi
+        .updateProof(data)
+        .then(() => {
+          navigate(`/proofs/${existingProofID}`);
+        })
+        .catch((err) => {
+          toast(err, {
+            type: "error",
+          });
+        });
     } else {
-      proofApi.createProof(data).then(() => {
-        navigate("/");
-      });
+      proofApi
+        .createProof(data)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((err) => {
+          toast(err, {
+            type: "error",
+          });
+        });
     }
   };
 

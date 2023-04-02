@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 import { CreateProofDTO, UpdateProofDTO } from './proofs.dto';
 import { Proof } from './proofs.entity';
 import {
@@ -27,13 +29,20 @@ export class ProofsController {
 
   @Get()
   @ApiQuery({ name: 'q', required: false })
-  getProofs(@Query('q') query: string = ''): Promise<Proof[]> {
+  getProofs(@Query('q') query?: string): Promise<Proof[]> {
     return this.proofService.query(query);
   }
 
   @Get(':id')
-  getOneProof(@Param('id') id: string): Promise<Proof> {
-    return this.proofService.findOne(id);
+  async getOneProof(@Param('id') id: string): Promise<Proof> {
+    try {
+      const proof = await this.proofService.findOne(id);
+      return proof;
+    } catch (error) {
+      if (error instanceof ProofNotFoundException) {
+        throw new NotFoundException(error.message);
+      } else throw error;
+    }
   }
 
   @Post()
@@ -43,8 +52,9 @@ export class ProofsController {
       const createdProof = await this.proofService.create(createProofDTO);
       return createdProof;
     } catch (error) {
-      if (error instanceof ProofAlreadyExistsException)
+      if (error instanceof ProofAlreadyExistsException) {
         throw new ConflictException(error.message);
+      } else throw error;
     }
   }
 
@@ -55,11 +65,15 @@ export class ProofsController {
     @Body() updateProofDTO: UpdateProofDTO,
   ): Promise<Proof> {
     try {
+      console.log('DTO: ', updateProofDTO);
       const updatedProof = await this.proofService.update(id, updateProofDTO);
+      console.log('result: ', updatedProof);
+
       return updatedProof;
     } catch (error) {
-      if (error instanceof ProofNotFoundException)
+      if (error instanceof ProofNotFoundException) {
         throw new NotFoundException(error.message);
+      } else throw error;
     }
   }
 
@@ -70,7 +84,26 @@ export class ProofsController {
     } catch (error) {
       if (error instanceof ProofNotFoundException) {
         throw new NotFoundException(error.message);
-      }
+      } else throw error;
     }
+  }
+
+  @Post('backup')
+  async createBackup(): Promise<void> {
+    const allProofs = await this.proofService.query();
+    const backup = JSON.stringify(allProofs);
+    const filenameWithTimestamp = `proofs.${new Date()
+      .toISOString()
+      .replace(/:/g, '_')}.json`;
+    const backupPath = path.join(
+      __dirname,
+      '..',
+      'backup',
+      filenameWithTimestamp,
+    );
+    if (!fs.existsSync(path.dirname(backupPath))) {
+      fs.mkdirSync(path.dirname(backupPath));
+    }
+    fs.writeFileSync(backupPath, backup);
   }
 }
