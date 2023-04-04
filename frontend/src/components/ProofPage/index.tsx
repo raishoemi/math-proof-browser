@@ -48,7 +48,9 @@ const ProofPage: React.FC = () => {
   return (
     <>
       <div className={classes.container}>
-        <div className={classes.proofId}>{proof.id}</div>
+        <div className={classes.proofId}>
+          {proof.id} - {proof.courseTag}
+        </div>
         <div className={classes.proofHeader}>
           <div className={classes.proofTitle}>
             {proof.type} {proof.title && ` - ${proof.title}`}
