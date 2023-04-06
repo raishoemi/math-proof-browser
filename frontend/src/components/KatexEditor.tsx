@@ -81,8 +81,8 @@ const KatexEditor: React.FC<Props> = (props) => {
       ) : (
         <>
           <textarea
-            {...props.textAreaExtraProps}
             ref={textAreaRef}
+            {...props.textAreaExtraProps}
             onKeyDown={onKeyDown}
             className={classes.textArea}
             onChange={handleChange}
