@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 import { createUseStyles } from "react-jss";
 import Katex from "./Katex";
 
@@ -9,15 +10,16 @@ interface Props {
     htmlFor: string;
     text: string;
   };
-  textAreaExtraProps: {};
+  textAreaExtraProps: UseFormRegisterReturn;
   error?: boolean;
 }
 
 const KatexEditor: React.FC<Props> = (props) => {
   const classes = useStyles();
   const [isPreviewModeActive, setIsPreviewModeActive] = React.useState(false);
+  const { ref, ...restOfTextAreaProps } = props.textAreaExtraProps;
   const katexRef = React.useRef<HTMLDivElement>(null);
-  const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
+  const textAreaRef = React.useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     if (isPreviewModeActive) {
@@ -27,26 +29,11 @@ const KatexEditor: React.FC<Props> = (props) => {
     }
   }, [isPreviewModeActive]);
 
-  const onKeyDown = (
-    e:
-      | React.KeyboardEvent<HTMLTextAreaElement>
-      | React.KeyboardEvent<HTMLDivElement>
-  ) => {
-    if (e.ctrlKey && e.key === "Enter") {
-      togglePreview();
-    }
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     props.onChange(e.target.value);
   };
 
   const togglePreview = () => {
-    if (isPreviewModeActive) {
-      textAreaRef.current?.focus();
-    } else {
-      katexRef.current?.focus();
-    }
     setIsPreviewModeActive((isActive) => !isActive);
   };
 
@@ -70,20 +57,17 @@ const KatexEditor: React.FC<Props> = (props) => {
         </div>
       </div>
       {isPreviewModeActive ? (
-        <div
-          ref={katexRef}
-          className={classes.katexPreviewContainer}
-          tabIndex={0}
-          onKeyDown={onKeyDown}
-        >
+        <div ref={katexRef} className={classes.katexPreviewContainer}>
           <Katex text={props.value} />
         </div>
       ) : (
         <>
           <textarea
-            ref={textAreaRef}
-            {...props.textAreaExtraProps}
-            onKeyDown={onKeyDown}
+            ref={(e) => {
+              textAreaRef.current = e;
+              ref(e);
+            }}
+            {...restOfTextAreaProps}
             className={classes.textArea}
             onChange={handleChange}
             value={props.value}
