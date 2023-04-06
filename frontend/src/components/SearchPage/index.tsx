@@ -73,7 +73,7 @@ const useStyles = createUseStyles({
   },
   addNewProofButtonLink: {
     textDecoration: "none",
-    width: "10%",
+    width: "13%",
     height: "40%",
   },
   addNewProofButton: {

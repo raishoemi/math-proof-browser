@@ -34,7 +34,7 @@ const useStyles = createUseStyles({
     overflow: "hidden",
   },
   logoContainer: {
-    width: "20vh",
+    width: "13vh",
     position: "absolute",
     marginTop: "3vh",
     marginLeft: "3vh",
