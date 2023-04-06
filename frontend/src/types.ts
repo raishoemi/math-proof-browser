@@ -13,6 +13,7 @@ export enum ProofType {
   Definition = "Definition",
   Corollary = "Corollary",
   Axiom = "Axiom",
+  Claim = "Claim",
 }
 
 export enum CourseTag {

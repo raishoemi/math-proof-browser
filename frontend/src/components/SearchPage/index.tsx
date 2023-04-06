@@ -4,12 +4,11 @@ import { proofApi } from "api";
 import { useDebounce } from "hooks/useDebounce";
 import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
-import { useNavigate } from "react-router-dom";
 import { Proof } from "types";
 import { sortByID } from "./sortProofs";
+import { toast } from "react-toastify";
 
 const SearchPage: React.FC = () => {
-  const navigate = useNavigate();
   const classes = useStyles();
 
   const [isSearching, setIsSearching] = useState(false);
@@ -22,19 +21,16 @@ const SearchPage: React.FC = () => {
     proofApi
       .searchProofs(debouncedSearchQuery)
       .then((results) => setSearchResults(results.sort(sortByID)))
-      .catch((err) => console.log(err))
+      .catch((err) => toast.error(err.message))
       .finally(() => setIsSearching(false));
   }, [debouncedSearchQuery]);
 
   return (
     <div className={classes.searchContainer}>
       <div className={classes.searchInputContainer}>
-        <button
-          className={classes.addNewProofButton}
-          onClick={() => navigate("proofs/create")}
-        >
-          Add Proof
-        </button>
+        <a href="/proofs/create" className={classes.addNewProofButtonLink}>
+          <button className={classes.addNewProofButton}>Add Proof</button>
+        </a>
         <div className={classes.searchInput}>
           <SearchInput
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -54,14 +50,15 @@ const SearchPage: React.FC = () => {
               </div>
             ))
           : searchResults.map((proof) => (
-              <div
+              <a
+                href={`/proofs/${proof.id}`}
                 key={proof.id}
-                className={classes.searchResultContainer}
-                onClick={() => navigate(`/proofs/${proof.id}`)}
-                onKeyUp={() => navigate(`/proofs/${proof.id}`)}
+                className={classes.searchResultContainerLink}
               >
-                <ProofResult proof={proof} />
-              </div>
+                <div className={classes.searchResultContainer}>
+                  <ProofResult proof={proof} />
+                </div>
+              </a>
             ))}
       </div>
     </div>
@@ -74,10 +71,14 @@ const useStyles = createUseStyles({
     // So I can use space-between/space-around to place the button on the left and the input in the middle
     width: "10%",
   },
-  addNewProofButton: {
+  addNewProofButtonLink: {
+    textDecoration: "none",
     width: "10%",
     height: "40%",
-    display: "inlineBlock",
+  },
+  addNewProofButton: {
+    height: "100%",
+    width: "100%",
     padding: "10px 20px",
     border: "none",
     borderRadius: "10px",
@@ -135,6 +136,9 @@ const useStyles = createUseStyles({
     "&:hover": {
       boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.5)",
     },
+  },
+  searchResultContainerLink: {
+    textDecoration: "none",
   },
   skeletonResult: {
     padding: 0,
