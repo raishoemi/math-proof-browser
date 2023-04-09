@@ -36,7 +36,6 @@ lerna-debug.log*
 
 # mysql local DB
 mysql-data
-backup
 
 # null-ls sometimes created local files
 .null-ls*

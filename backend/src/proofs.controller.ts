@@ -92,15 +92,7 @@ export class ProofsController {
   async createBackup(): Promise<void> {
     const allProofs = await this.proofService.query();
     const backup = JSON.stringify(allProofs);
-    const filenameWithTimestamp = `proofs.${new Date()
-      .toISOString()
-      .replace(/:/g, '_')}.json`;
-    const backupPath = path.join(
-      __dirname,
-      '..',
-      'backup',
-      filenameWithTimestamp,
-    );
+    const backupPath = path.join(__dirname, '..', 'mysql.backup.json');
     if (!fs.existsSync(path.dirname(backupPath))) {
       fs.mkdirSync(path.dirname(backupPath));
     }
