@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
-import { CourseTag, ProofType } from './proofs.types';
+import { CourseTag, ProofType } from 'shared-types';
 
 export class CreateProofDTO {
   @ApiProperty({ example: '1.1.1' })

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { ProofsModule } from './proofs.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
@@ -10,7 +10,7 @@ import * as morgan from 'morgan';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
+    ProofsModule,
     new FastifyAdapter(),
   );
   app.enableCors();

@@ -1,0 +1,32 @@
+{
+  "name": "shared-types",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "private": true,
+  "license": "MIT",
+  "devDependencies": {
+    "package-scripts": "1.1.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "babel-runtime": "6.26.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:dev": "tsc -w"
+  },
+  "module": "es/index.js",
+  "keywords": [
+    "create-package"
+  ],
+  "files": [
+    "lib"
+  ],
+  "browserslist": [
+    "last 2 versions"
+  ],
+  "engines": {
+    "node": ">= 4"
+  }
+}

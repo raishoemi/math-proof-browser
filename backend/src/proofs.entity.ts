@@ -1,5 +1,5 @@
 import { PrimaryColumn, Entity, Column } from 'typeorm';
-import { CourseTag, ProofType } from './proofs.types';
+import { CourseTag, ProofType } from 'shared-types';
 
 @Entity()
 export class Proof {
