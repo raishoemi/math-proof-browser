@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import KatexEditor from "components/KatexEditor";
 import { useForm } from "react-hook-form";
-import { CourseTag, Proof } from "types";
-import { ProofType } from "shared-types";
+import { Proof } from "types";
+import { CourseTag, ProofType } from "shared-types";
 import { proofApi } from "api";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";

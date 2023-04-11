@@ -1,3 +1,4 @@
+import { ProofType, CourseTag } from "shared-types";
 export type Proof = {
   title: string;
   what: string;
@@ -6,17 +7,3 @@ export type Proof = {
   id: string;
   courseTag: CourseTag;
 };
-
-export enum ProofType {
-  Theorem = "Theorem",
-  Lemma = "Lemma",
-  Definition = "Definition",
-  Corollary = "Corollary",
-  Axiom = "Axiom",
-  Claim = "Claim",
-}
-
-export enum CourseTag {
-  LinearAlgebra = "LinearAlgebra",
-  Calculus = "Calculus",
-}
