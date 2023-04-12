@@ -50,6 +50,6 @@
     "@types/katex": "^0.16.0",
     "@types/react-modal": "^3.13.1",
     "@types/react-router-dom": "^5.3.3",
-    "shared-types": "../shared-types"
+    "shared-types": "shared-types"
   }
 }

@@ -1,0 +1,15 @@
+{
+  "name": "math-proof-browser",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared-types"
+  ],
+  "scripts": {
+    "start": "concurrently \"yarn workspace frontend start\" \"yarn workspace backend start:dev\" \"yarn workspace shared-types build:dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.2"
+  }
+}
